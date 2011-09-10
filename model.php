@@ -159,9 +159,9 @@ class DBModel
     public function __construct(
         $table,
         $conn = null,
+        $database = 'mysql',
         $user = 'root',
         $password = '',
-        $database = 'mysql',
         $server = 'localhost:3306'
         )
     {
@@ -179,6 +179,7 @@ class DBModel
             ) or mdie("Could not connect");
         } else {
             $this->conn = $conn;
+            $this->database = $database;
         }
 
         mysql_select_db($this->database, $this->conn);
@@ -202,7 +203,6 @@ class DBModel
                 $this->primary_key = $row['column_name'];
             array_push($this->columns, $row['column_name']);
         }
-        print "Primary key is " . $this->primary_key;
         mysql_free_result($result);
     }
 }

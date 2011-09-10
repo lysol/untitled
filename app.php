@@ -6,33 +6,47 @@ class App
     private $posts = array();
     public $notFoundBody = '';
     public $errorBody = '';
-    private $basePath = '';
+    public $basePath = '';
 
     public function notFound()
     {
         header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404);
         if ($this->notFoundBody == '')
         {
-            return "404 Not Found\n";
+            print "404 Not Found\n";
         } else {
-            return $this->notFoundBody;
+            print $this->notFoundBody;
         }
     }
 
-    public function basePath($basePath)
+    public function setBasePath($basePath)
     {
         $this->basePath = $basePath;
     }
 
     public function returnError()
     {
-        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error',
+            true, 500);
         if ($this->errorBody == '')
         {
-            return "500 Internal Server Error\n";
+            print "500 Internal Server Error\n";
         } else {
-            return $this->errorBody;
+            print $this->errorBody;
         }
+    }
+
+    private function buildRoutePattern($pattern)
+    {
+        $pattern = preg_quote($pattern, '/');
+        $pattern = preg_replace('/\\\:([a-zA-Z0-9_]+)/', '(?P<$1>[^\/]+)', $pattern);
+        return "/" . $pattern . "/";
+    }
+
+    public function seeother($path)
+    {
+        $newpath = str_replace('//', '', $this->basePath . $path);
+        header('Location: ' . $newpath);
     }
 
     public function serve()
@@ -40,7 +54,7 @@ class App
         $url = $_SERVER['REQUEST_URI'];
         $bpLen = strlen($this->basePath);
         if ($bpLen > 0 && strpos($url, $this->basePath) == 0)
-            $url = substr($url, $bpLen);
+            $url = substr($url, $bpLen - 1);
         if ($url == '')
             $url = '/';
         switch ($_SERVER['REQUEST_METHOD'])
@@ -52,11 +66,13 @@ class App
                 $tRoutes = $this->posts;
                 break;
             default:
-                return $this->returnError();
+                $this->returnError();
+                return;
         }
 
         foreach($tRoutes as $targetPattern => $callback)
         {
+            $targetPattern = $this->buildRoutePattern($targetPattern);
             if (preg_match($targetPattern, $url, $matches))
             {
                 $argnames = array_filter(array_keys($matches), 'is_string');
@@ -65,10 +81,13 @@ class App
                 {
                     $args[$arg] = $matches[$arg];
                 }
-                return $callback($args);
+                $result = $callback($args);
+                if (is_string($result))
+                    print $result;
+                return;
             }
         }
-        return $this->notFound();
+        $this->notFound();
     }
 
     public function get($pattern, $callback)
@@ -81,3 +100,5 @@ class App
         $this->posts[$pattern] = $callback;
     }
 }
+
+
