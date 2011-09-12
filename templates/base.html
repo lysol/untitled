@@ -1,16 +1,38 @@
 <html>
     <head>
         <title>{% block title %}Untitled{% endblock %}</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                    {% block domready %}
+                    {% endblock %}
+                    });
+        </script>
         <style type="text/css">
             textarea
             {
+                font-size: 18px;
                 width: 30em;
                 height: 50em;
             }
 
             body
             {
+                padding: 5em;
+                font-family: sans-serif;
                 font-size: 18px;
+            }
+
+            #article
+            {
+                border: 1px solid #DDDDDD;
+                border-radius: .5em;
+                padding: 1em;
+            }
+
+            #article-footer
+            {
+                padding-top: 3em;
             }
         </style>
     </head>

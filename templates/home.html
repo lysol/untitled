@@ -1,5 +1,29 @@
 {% extends "base.html" %}
 
+{% block domready %}
+
+    sanitizeName = function(text) {
+        return encodeURI(text.replace(/ /g, '_'));
+        }
+
+    redirector = function() {
+        newName = sanitizeName($('#article-view').val());
+        window.location.replace('{{ basePath }}wiki/' + newName);
+        return false;
+        }
+
+    $('#article-go').click(redirector);
+    $('#article-form').submit(redirector);
+
+{% endblock %}
+
 {% block content %}
-Welcome!
+<h1>Welcome!</h1>
+
+<div>
+    Enter a term to edit or view an article:<br />
+    <form id="article-form" name="article-form">
+        <input id="article-view" /><input type="button" value="Go!" id="article-go" />
+    </form>
+</div>
 {% endblock %}
