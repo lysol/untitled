@@ -50,7 +50,6 @@ class DBModel
 
     public function delete($id)
     {
-        mysql_select_db($this->database, $this->conn);
         $query = sprintf("DELETE FROM %s WHERE %s = $1",
             $this->table,
             $this->primary_key
@@ -65,7 +64,6 @@ class DBModel
 
     public function insert($datahash=array())
     {
-        mysql_select_db($this->database, $this->conn);
         $realkeys = array();
         $realvals = array();
         foreach($datahash as $key => $val)
@@ -93,7 +91,6 @@ class DBModel
 
     public function find($data=array(), $page = -1, $per_page = 20)
     {
-        mysql_select_db($this->database, $this->conn);
         $sets = array();
         foreach ($data as $key => $val)
         {
@@ -114,20 +111,18 @@ class DBModel
 
         $query = sprintf("SELECT * FROM %s WHERE %s %s", $this->table, $clause,
             $limitoffset);
-        print "Query: " . $query . "\n";
         $result = mysql_query($query, $this->conn);
         if (!$result)
             mdie("Could not search for instances");
         $insts = array();
         while ($row = mysql_fetch_assoc($result))
-            array_push($insts, new DBInstance($this, $row));
+            array_push($insts, new DBInstance(&$this, $row));
         return $insts;
     }
 
 
     public function get($id)
     {
-        mysql_select_db($this->database, $this->conn);
         $query = sprintf('SELECT * FROM %s WHERE %s = $1',
             $this->table,
             $this->primary_key
@@ -137,12 +132,11 @@ class DBModel
             mdie("Could not get instance");
         $row = mysql_fetch_assoc($result);
         mysql_free_result($result);
-        return new DBInstance($this, $row);
+        return new DBInstance(&$this, $row);
     }
 
     public function getall()
     {
-        mysql_select_db($this->database, $this->conn);
         $query = sprintf('SELECT * FROM %s', $this->table);
         $result = mysql_query($query, $this->conn);
         if (!$result)
@@ -150,7 +144,7 @@ class DBModel
 
         $instances = array();
         while ($row = mysql_fetch_assoc($result)) {
-            array_push($instances, new DBInstance($this, $row));
+            array_push($instances, new DBInstance(&$this, $row));
         }
         mysql_free_result($result);
         return $instances;
@@ -182,7 +176,8 @@ class DBModel
             $this->database = $database;
         }
 
-        mysql_select_db($this->database, $this->conn);
+        if (!(mysql_select_db($this->database, $this->conn)))
+            mdie("Could not select db");
 
         // Next, query information_schema.tables for our primary key.
         // Use this for saving/deleting model instances
@@ -232,7 +227,6 @@ class DBInstance
 
     public function save()
     {
-        mysql_select_db($this->model->database, $this->model->conn);
         $sets = array();
         $pk = $this->model->primary_key;
         foreach ($this->columns as $key => $val)

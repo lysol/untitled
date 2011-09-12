@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Editing: {{ article.name }}{% endblock %}
+
+{% block content %}
+<h1>Now editing: {{ article_name }}</h1>
+<form action="{{ basePath }}wiki/{{ article_name }}/edit" method="POST">
+    <textarea name="article_body">{{ article_body }}</textarea>
+    <input type="submit" />
+</form>
+{% endblock %}

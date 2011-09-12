@@ -45,7 +45,7 @@ class App
 
     public function seeother($path)
     {
-        $newpath = str_replace('//', '', $this->basePath . $path);
+        $newpath = str_replace('//', '/', $this->basePath . $path);
         header('Location: ' . $newpath);
     }
 
@@ -95,7 +95,7 @@ class App
         $this->gets[$pattern] = $callback;
     }
 
-    public function post($pattern, $className)
+    public function post($pattern, $callback)
     {
         $this->posts[$pattern] = $callback;
     }

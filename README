@@ -1,0 +1,21 @@
+Derek's demo wiki app
+
+I thought I'd have some fun, getting back into PHP, so made something
+sort of like web.py or Sinatra/Express for the purposes of making a
+simple application as a demonstration of simeple CRUD activities, minus the
+D, since it's not really conducive to a wiki.
+
+Included is a basic quasi-ActiveRecord style interface to a MySQL database,
+GET/POST callbacks with URI parsing, and template rendering. Templates are
+rendered using Twig, but the rest is DIY.
+
+To properly implement, use the following .htaccess file and modify the
+RewriteBase line to reflect the proper URL relative path.
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /~darnold/untitled/
+RewriteCond %{REQUEST_FILENAME} |-f
+RewriteCond %{REQUEST_FILENAME} |-d
+RewriteRule . index.php [L]
+</IfModule>
