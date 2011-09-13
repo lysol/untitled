@@ -10,7 +10,7 @@ $twig = tmpl_init();
 $config = parse_ini_file("untitled.ini");
 
 $dbconn = mysql_connect($config['db_server'], $config['db_username'],
-    $config['db_password']);
+    $config['db_password']) or mdie("Could not connect");
 $articleModel = new DBModel('articles', $dbconn, $config['db_name']);
 
 
