@@ -31,3 +31,8 @@ requires a single table:
         name text,
         body text
     );
+
+PHP modules required:
+
+* [Twig](http://twig.sensiolabs.org/)
+* [PHP-Markdown](http://michelf.com/projects/php-markdown/)
