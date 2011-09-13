@@ -26,4 +26,13 @@
         <input id="article-view" /><input type="button" value="Go!" id="article-go" />
     </form>
 </div>
+
+<div id="article-list">
+    <h2>Article list:</h2>
+    <ul>
+        {% for article in article_names %}
+        <li><a href="{{ basePath }}wiki/{{ article }}">{{ article }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

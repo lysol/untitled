@@ -83,9 +83,15 @@ $app->get('/wiki/:article', function($args)
 });
 
 $app->get('/', function($args)
-    use ($twig) {
+    use ($twig, $articleModel) {
+    $articles = $articleModel->getall();
+    $article_names = array();
+    foreach($articles as $article)
+        array_push($article_names, $article->name);
     $template = $twig->loadTemplate('home.html');
-    return $template->render(array());
+    return $template->render(array(
+        'article_names' => $article_names
+    ));
 });
 
 
