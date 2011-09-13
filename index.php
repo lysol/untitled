@@ -11,9 +11,6 @@ $config = parse_ini_file("untitled.ini");
 
 $dbconn = mysql_connect($config['db_server'], $config['db_username'],
     $config['db_password']);
-$res = mysql_query('SELECT 1', $dbconn);
-if (!$res)
-    mdie("Could not connect to database");
 $articleModel = new DBModel('articles', $dbconn, $config['db_name']);
 
 
