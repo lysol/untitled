@@ -7,11 +7,16 @@ require 'markdown.php';
 
 $app = new App();
 $twig = tmpl_init();
-$dbconn = mysql_connect('localhost', 'demo', 'demo', 'demo');
+$config = parse_ini_file("untitled.ini");
+
+$dbconn = mysql_connect($config['db_server'], $config['db_username'],
+    $config['db_password']);
 $res = mysql_query('SELECT 1', $dbconn);
 if (!$res)
-    mdie("Test");
-$articleModel = new DBModel('articles', $dbconn, 'demo');
+    mdie("Could not connect to database");
+$articleModel = new DBModel('articles', $dbconn, $config['db_name']);
+
+
 
 function renderBody ($text, $basePath)
 {

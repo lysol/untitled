@@ -1,0 +1,4 @@
+db_server = "localhost"
+db_username = "demo"
+db_password = "demo"
+db_name = "demo"

@@ -12,7 +12,7 @@ accomplish the same goals.
 I also implemented a simple database model module that exposes database records
 in an object-oriented fashion.
 
-To properly implement, use the following .htaccess file and modify the
+To properly implement, use the following `.htaccess` file and modify the
 RewriteBase line to reflect the proper URL relative path.
 
     <IfModule mod_rewrite.c>
@@ -23,8 +23,7 @@ RewriteBase line to reflect the proper URL relative path.
     RewriteRule . index.php [L]
     </IfModule>
 
-Being a demo, the database connection information is hardcoded. The database
-requires a single table:
+The database requires a single table, and is configured using a file named `untitled.ini`, located in the same directory.
 
     CREATE TABLE articles (
         id integer auto_increment primary key,
