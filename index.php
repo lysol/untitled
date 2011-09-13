@@ -28,7 +28,7 @@ function renderBody ($text, $basePath)
     return $text;
 }
 
-$app->basePath = '/~darnold/untitled/';
+$app->basePath = $config['base_path'];
 
 $app->post('/wiki/:article/edit', function($args)
     use ($app, $twig, $articleModel) {

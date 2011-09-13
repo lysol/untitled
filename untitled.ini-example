@@ -1,4 +1,7 @@
+; mysql connection info
 db_server = "localhost"
 db_username = "demo"
 db_password = "demo"
 db_name = "demo"
+; base_path must include trailing slash.
+base_path = "/~darnold/untitled/"
