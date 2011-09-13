@@ -22,3 +22,12 @@ RewriteBase line to reflect the proper URL relative path.
     RewriteCond %{REQUEST_FILENAME} |-d
     RewriteRule . index.php [L]
     </IfModule>
+
+Being a demo, the database connection information is hardcoded. The database
+requires a single table:
+
+    CREATE TABLE articles (
+        id integer auto_increment primary key,
+        name text,
+        body text
+    );

@@ -4,8 +4,14 @@
 
 {% block content %}
 <h1>Now editing: {{ article_name }}</h1>
+<div id="syntax-info">
+    Use  to
+    Use [[wiki_names]] to link to other articles, and 
+    <a href="http://daringfireball.net/projects/markdown/">Markdown</a>
+    for everything else.
+</div>
 <form action="{{ basePath }}wiki/{{ article_name }}/edit" method="POST">
-    <textarea name="article_body">{{ article_body }}</textarea>
+    <textarea name="article_body">{{ article_body }}</textarea><br />
     <input type="submit" />
 </form>
 {% endblock %}
