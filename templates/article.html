@@ -5,7 +5,9 @@
 {% block content %}
 <h1>{{ article_name }}</h1>
 <div id="article">
-  {{ article_body }}
+    {% autoescape false %}
+    {{ article_body }}
+    {% endautoescape %}
 </div>
 <div id="article-footer">
     <a href="{{ basePath }}wiki/{{ article_name }}/edit">Edit this article</a>

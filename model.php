@@ -84,7 +84,7 @@ class DBModel
         mysql_query($query, $this->conn);
         $newid = mysql_insert_id($this->conn);
         if (!$newid)
-            throw new Exception("Record was not inserted");
+            mdie("Record was not inserted");
         // need to get id here
         return $this->get($newid);
     }

@@ -3,6 +3,7 @@
 require 'view.php';
 require 'model.php';
 require 'app.php';
+require 'markdown.php';
 
 $app = new App();
 $twig = tmpl_init();
@@ -11,6 +12,16 @@ $res = mysql_query('SELECT 1', $dbconn);
 if (!$res)
     mdie("Test");
 $articleModel = new DBModel('articles', $dbconn, 'demo');
+
+function renderBody ($text, $basePath)
+{
+    $text = preg_replace('/\[\[([^ ]+)\]\]/', '[\1](' . $basePath
+        . 'wiki/\1/)', $text);
+    $text = strip_tags(Markdown($text),
+        '<ul><ol><li><a><b><p><div><table><tr><td><h1><h2><h3><h4><h5><h6>'
+        . '<i><u><span>');
+    return $text;
+}
 
 $app->basePath = '/~darnold/untitled/';
 
@@ -63,7 +74,7 @@ $app->get('/wiki/:article', function($args)
     $template = $twig->loadTemplate('article.html');
     return $template->render(array(
         'article' => $article,
-        'article_body' => $article->body,
+        'article_body' => renderBody($article->body, $app->basePath),
         'basePath' => $app->basePath,
         'article_name' => $args['article']
     ));
